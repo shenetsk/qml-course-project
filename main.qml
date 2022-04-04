@@ -4,8 +4,8 @@ import QtQuick.Layouts 1.2
 
 ApplicationWindow {
 	visible: true
-	width: 640
-	height: 240
+	width: 1100
+	height: 600
 	title: qsTr("Files Viewer")
 
 	Connections {
@@ -54,7 +54,7 @@ ApplicationWindow {
 		Menu {
 			title: qsTr("Favorites")
 			MenuItem {
-				text: "Add folder ..."
+				text: "Add folder..."
 				onTriggered:{
 					usersModel.loadUsers()
 					
@@ -65,11 +65,11 @@ ApplicationWindow {
 	}
 
 	GridLayout {
-		
 		Layout.fillWidth: true
 		anchors.fill: parent
 		columns: 1
-		
+
+		// path	
 		RowLayout {
 			Layout.fillWidth: true
 			Layout.rightMargin: 10
@@ -90,15 +90,18 @@ ApplicationWindow {
 			Layout.fillHeight: true
 			Layout.fillWidth: true			
 
+			// 1 folders
 			ScrollView {
+				width: parent.width / 4
+
 				ListView {
-					width: 180
-					
-					focus: true
 					id: folders
 					model: foldersModel
+					width: parent.width
+					focus: true
 					currentIndex: -1
-					delegate: RowLayout{
+
+					delegate: RowLayout {
 						id: foldersLayout
 						width: folders.width
 
@@ -140,12 +143,15 @@ ApplicationWindow {
 				}
 			}
 
+			// 2 files
 			ScrollView {
+				width: parent.width / 4
 				ListView {
-					width: 180; height: 200
-					focus: true
 					id: files
 					model: filesModel
+					width: parent.width
+
+					focus: true
 					currentIndex: -1
 					delegate: RowLayout{
 						id: filesLayout
@@ -176,31 +182,40 @@ ApplicationWindow {
 					highlight: Rectangle { color: "lightsteelblue" }
 				}
 			}
+
+			// 3 preview
 			RowLayout {
+				Layout.fillWidth: True
+				Layout.fillHeight: True
+
+				Layout.leftMargin: 10
+				Layout.rightMargin: 10
+				Layout.bottomMargin: 10
+
 				Rectangle {
-					Layout.preferredWidth: 150
-					Layout.preferredHeight: 150
+					id: preview
+					//Layout.preferredWidth: 150
+					//Layout.preferredHeight: 150
 					clip: true
 					color: "transparent"
+
 					border.color: "black"
 					border.width: 1
 
+			        anchors.fill: parent
+
 					Image {
 						id: imagePreview
-						//Layout.preferredWidth: 150
-						//Layout.preferredHeight: 150
 						anchors.fill: parent
 						visible: false
 						fillMode: Image.PreserveAspectFit
-						
-						//horizontalAlignment: Image.AlignLeft
-						//verticalAlignment: Image.AlignTop
 					}
 
 					Text {
 						id: textPreview
 						visible: false
 						anchors.fill: parent
+						anchors.margins: 5	
 					}
 				}
 			}
