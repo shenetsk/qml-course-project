@@ -14,11 +14,20 @@ class FoldersModel(QAbstractListModel):
 	
 		super().__init__(parent)
 		
+		#Текущая директория в виде списка
 		self.currentDirectory = re.findall('%s[^%s]+' % (os.sep, os.sep), os.path.dirname(os.path.abspath(__file__)))
-	
+
+	#Смена текущей директории
+	def setFolder(self, path):
+		self.currentDirectory = re.findall('%s[^%s]+' % (os.sep, os.sep), path)
+		
+		self.getFolders()
+
+	#Получение списка папок
 	def getFolders(self):
 		self.folders = []
 		
+		#Проверка, находимся ли мы в корне
 		if (len(self.currentDirectory)):
 			self.folders.append({'folderName': '..'})
 		
@@ -26,6 +35,7 @@ class FoldersModel(QAbstractListModel):
 		
 		self.folderResult.emit(self.currentDirectoryPlain)
 		
+		#Обновление списка файлов
 		self.base.files.getFiles(self.currentDirectoryPlain)
 
 		self.beginResetModel()
@@ -45,6 +55,7 @@ class FoldersModel(QAbstractListModel):
 		default[self.folderName] = QByteArray(b"folderName")
 		return default
 
+	#Сообщение из Qt о двойном клике по папке
 	@pyqtSlot(int)
 	def selectFolder(self, index):	
 		if index == 0 and len(self.currentDirectory):

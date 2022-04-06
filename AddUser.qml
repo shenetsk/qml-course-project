@@ -4,9 +4,9 @@ import QtQuick.Dialogs 1.3
 import QtQuick.Layouts 1.2
  
 Dialog {
-	id: addFavoriteWindow
-	width: 500
-	height: 100
+	id: addUserWindow
+	width: 480
+	height: 80
 
 	contentItem: Rectangle {
 		anchors.fill: parent
@@ -15,16 +15,13 @@ Dialog {
 			Layout.fillWidth: true
 			anchors.fill: parent
 
-			# выпадающий список
-			ComboBox {
-				id: addFavoriteUser
+			TextField {
+				id: newUser
 				Layout.fillWidth: true
 				Layout.rightMargin: 10
 				Layout.leftMargin: 10
 				Layout.topMargin: 10
 				Layout.alignment: Qt.AlignTop
-				model: usersModel
-				textRole: "display"
 			}
 		}
 
@@ -33,23 +30,13 @@ Dialog {
 			anchors.right: parent.right
 
 			Button {
-				text: "Save"
 				Layout.rightMargin: 10
 				Layout.bottomMargin: 10
-				Layout.topMargin: 10
+				text: "Add"
 				onClicked: {
-					usersModel.saveFavorite(addFavoriteUser.currentIndex)
+					usersModel.addUser(newUser.text)
 
-					addFavoriteWindow.close()
-				}
-			}
-			Button {
-				Layout.rightMargin: 10
-				Layout.bottomMargin: 10
-				Layout.topMargin: 10
-				text: "User List"
-				onClicked: {
-					addFavoriteWindow.close()
+					addUserWindow.close()
 					
 					usersWindow.open()
 				}

@@ -4,7 +4,7 @@ import QtQuick.Layouts 1.2
 
 ApplicationWindow {
 	visible: true
-	width: 1100
+	width: 1200
 	height: 600
 	title: qsTr("Files Viewer")
 
@@ -50,26 +50,35 @@ ApplicationWindow {
 				}
 			}
 		}
-		
+
 		Menu {
 			title: qsTr("Favorites")
 			MenuItem {
-				text: "Add folder..."
+				text: "Add folder"
 				onTriggered:{
 					usersModel.loadUsers()
 					
 					addFavoriteWindow.open()
 				}
 			}
+
+			MenuItem {
+				text: "Favorites"
+				onTriggered:{
+					favoritesModel.loadFavorites()
+				
+					favoritesWindow.open()
+				}
+			}
 		}
 	}
 
 	GridLayout {
+		
 		Layout.fillWidth: true
 		anchors.fill: parent
 		columns: 1
-
-		// path	
+		
 		RowLayout {
 			Layout.fillWidth: true
 			Layout.rightMargin: 10
@@ -88,20 +97,16 @@ ApplicationWindow {
 
 		SplitView {
 			Layout.fillHeight: true
-			Layout.fillWidth: true			
+			Layout.fillWidth: true
 
-			// 1 folders
 			ScrollView {
 				width: parent.width / 4
-
 				ListView {
+					focus: true
 					id: folders
 					model: foldersModel
-					width: parent.width
-					focus: true
 					currentIndex: -1
-
-					delegate: RowLayout {
+					delegate: RowLayout{
 						id: foldersLayout
 						width: folders.width
 
@@ -143,15 +148,13 @@ ApplicationWindow {
 				}
 			}
 
-			// 2 files
 			ScrollView {
 				width: parent.width / 4
+
 				ListView {
+					focus: true
 					id: files
 					model: filesModel
-					width: parent.width
-
-					focus: true
 					currentIndex: -1
 					delegate: RowLayout{
 						id: filesLayout
@@ -164,7 +167,7 @@ ApplicationWindow {
 							MouseArea {
 								anchors.fill: parent
 								onClicked: selectFile(index)
-							}						
+							}
 						}
 
 						MouseArea {
@@ -177,13 +180,11 @@ ApplicationWindow {
 							filesLayout.ListView.view.currentIndex = index
 							
 							filesModel.selectFile(index)
-						}						
+						}
 					}
 					highlight: Rectangle { color: "lightsteelblue" }
 				}
 			}
-
-			// 3 preview
 			RowLayout {
 				Layout.fillWidth: True
 				Layout.fillHeight: True
@@ -193,16 +194,13 @@ ApplicationWindow {
 				Layout.bottomMargin: 10
 
 				Rectangle {
-					id: preview
 					//Layout.preferredWidth: 150
 					//Layout.preferredHeight: 150
 					clip: true
 					color: "transparent"
-
 					border.color: "black"
 					border.width: 1
-
-			        anchors.fill: parent
+					anchors.fill: parent
 
 					Image {
 						id: imagePreview
@@ -215,7 +213,7 @@ ApplicationWindow {
 						id: textPreview
 						visible: false
 						anchors.fill: parent
-						anchors.margins: 5	
+						anchors.margins: 5
 					}
 				}
 			}
@@ -226,7 +224,19 @@ ApplicationWindow {
 		id: addFavoriteWindow
 		title: qsTr("Add Favorite")
 	}
+
+	Favorites {
+		id: favoritesWindow
+		title: qsTr("Favorites")
+	}
 	
+	Users {
+		id: usersWindow
+		title: qsTr("User List")
+	}
 
-
+	AddUser {
+		id: addUserWindow
+		title: qsTr("Add User")
+	}
 }

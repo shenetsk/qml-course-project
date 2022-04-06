@@ -30,7 +30,8 @@ class FilesModel(QAbstractListModel):
 		self.files = [{'fileName': d} for d in sorted(os.listdir(directory)) if os.path.isfile(directory + os.sep + d)]
 	
 		self.endResetModel()
-		
+
+	#Выбор файла
 	@pyqtSlot(int)
 	def selectFile(self, index):
 		filePath = self.base.folders.currentDirectoryPlain + self.files[index]['fileName']
@@ -39,9 +40,12 @@ class FilesModel(QAbstractListModel):
 
 		text = ''
 
+		#Проверка расширения
 		if fileExtension[1:] in ['txt', 'py', 'qml']:
+			#Получение текстовых файлов
 			f = open(filePath, "r")
 			text = f.read(500)
 			f.close()
 
+		#Отправка сообщения в Qt
 		self.fileResult.emit(filePath, text)
